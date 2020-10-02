@@ -58,4 +58,8 @@ def location(id_car, id_user, why):
     return str(cursor.rowcount)
 
 if __name__ == '__main__':
+<<<<<<< HEAD
     app.run(host='0.0.0.0', port=5000)
+=======
+    app.run(host= '0.0.0.0')
+>>>>>>> a5ec40a169b61da6f951f43adb5412cb30a6a184
