@@ -1,6 +1,5 @@
 from flask import Flask,jsonify,json,request
 import mysql.connector as mysql
-
 db = mysql.connect(
     host = "localhost",
     user = "root",
@@ -9,6 +8,10 @@ db = mysql.connect(
 )
 
 app = Flask(__name__)
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    return "Hello Nuclear Geeks"
 
 @app.route('/sign_in/<name>/<password>', methods=['GET'])
 def sign_in(name, password):
@@ -37,10 +40,10 @@ def cars():
     data = cursor.fetchall()
     return jsonify(data)
 
-@app.route('/locations', methods=['GET'])
-def locations():
+@app.route('/locations/<id_user>', methods=['GET'])
+def locations(id_user):
     cursor = db.cursor()
-    query = "SELECT * FROM locations INNER JOIN cars ON locations.id_car=cars.id"
+    query = "SELECT * FROM locations INNER JOIN cars ON locations.id_car=cars.id WHERE locations.id_user="+str(id_user)
     cursor.execute(query)
     data = cursor.fetchall()
     return jsonify(data)
@@ -55,4 +58,4 @@ def location(id_car, id_user, why):
     return str(cursor.rowcount)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', port=5000)
