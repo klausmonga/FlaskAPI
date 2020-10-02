@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="150dp">
+    <ImageView
+        android:layout_marginTop="15dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/rantal"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/model_c"
+            android:layout_margin="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Model : Humer H3"/>
+        <TextView
+            android:id="@+id/limite_de_kilometrage_c"
+            android:layout_margin="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="	limite de kilometrage : 159 km"/>
+        <TextView
+            android:id="@+id/conditions_en_matiere_de_carburant_c"
+            android:layout_margin="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="conditions en matiere de carburant : Full a la restitution"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <EditText
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:hint="Motif"
+                android:id="@+id/motif_c"/>
+            <Button
+                android:id="@+id/louer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Louer"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>
