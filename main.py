@@ -20,7 +20,9 @@ def sign_in(name, password):
     values = (name, password)
     cursor.execute(query, values)
     db.commit()
-    return str(cursor.rowcount)
+    if cursor.rowcount is 1:
+    	return login(name,password)
+    return 0
 
 @app.route('/login/<name>/<password>', methods=['GET'])
 def login(name, password):
@@ -29,7 +31,7 @@ def login(name, password):
     cursor.execute(query)
     data = cursor.fetchall()
     for pair in data:
-        return jsonify({"user": pair})
+        return jsonify({"user": {"id":pair[0]}})
     return jsonify({"user": 0})
 
 @app.route('/cars', methods=['GET'])
@@ -51,7 +53,7 @@ def locations(id_user):
 @app.route('/location/<id_car>/<id_user>/<why>', methods=['GET'])
 def location(id_car, id_user, why):
     cursor = db.cursor()
-    query = "INSERT INTO locations (id_user, id_car, why) VALUES (%s, %s, %s)"
+    query = "INSERT INTO locations (id_user, id_car, motif) VALUES (%s, %s, %s)"
     values = (id_user, id_car, why)
     cursor.execute(query, values)
     db.commit()
