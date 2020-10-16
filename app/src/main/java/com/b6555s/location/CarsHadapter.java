@@ -1,6 +1,9 @@
 package com.b6555s.location;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +14,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
 public class CarsHadapter extends RecyclerView.Adapter<CarsHadapter.ViewHolder> {
-        public ArrayList<CarDAO> cars;
+        public final ArrayList<CarDAO> cars;
         public Context context;
         public CarsHadapter(ArrayList<CarDAO> _cars, Context _context) {
             this.cars = _cars;
@@ -32,14 +44,14 @@ public class CarsHadapter extends RecyclerView.Adapter<CarsHadapter.ViewHolder> 
         }
 
         @Override
-        public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+        public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
             holder.model.setText("Modèle :"+this.cars.get(position).getModel());
             holder.conditions_en_matiere_de_carburant.setText("Conditions en matière de carburant : "+this.cars.get(position).getConditions_en_matiere_de_carburant());
             holder.limite_de_kilometrage.setText("limite de kilometrage : "+this.cars.get(position).getLimite_de_kilometrage());
             holder.louer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(context, cars.get(position).getModel(), Toast.LENGTH_SHORT).show();
+                    louer(cars.get(position).getId(),holder.motif.getText().toString());
                 }
             });
         }
@@ -48,6 +60,25 @@ public class CarsHadapter extends RecyclerView.Adapter<CarsHadapter.ViewHolder> 
         public int getItemCount() {
             return cars.size();
         }
+
+    private void louer(String id_car, String why) {
+        SharedPreferences msharedPreferences = this.context.getSharedPreferences("first_start", 0);
+        final StringRequest stringRequest;
+        stringRequest = new StringRequest(Request.Method.GET,
+                new Net().getDomain(this.context)+"/location/"+id_car+"/"+String.valueOf(msharedPreferences.getInt("id_user",0))+"/"+why, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e("resp",response);
+                context.startActivity(new Intent(context,MainActivity.class));
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Status remote"," erreur de volley: ("+error.getMessage()+")");
+            }
+        });
+        MySingleton.getInstance(context).addToRequestQueue(stringRequest);
+    }
 
         public class ViewHolder extends RecyclerView.ViewHolder{
 

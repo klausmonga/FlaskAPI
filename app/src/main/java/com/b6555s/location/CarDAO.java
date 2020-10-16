@@ -1,12 +1,12 @@
 package com.b6555s.location;
 
 public class CarDAO {
-    private int id;
+    private String id;
     private  String model;
     private  String limite_de_kilometrage;
     private String conditions_en_matiere_de_carburant;
 
-    public CarDAO(int id, String model, String limite_de_kilometrage, String conditions_en_matiere_de_carburant) {
+    public CarDAO(String id, String model, String limite_de_kilometrage, String conditions_en_matiere_de_carburant) {
         this.id = id;
         this.model = model;
         this.limite_de_kilometrage = limite_de_kilometrage;
@@ -16,11 +16,11 @@ public class CarDAO {
     public CarDAO() {
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

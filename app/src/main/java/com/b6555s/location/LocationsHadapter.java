@@ -25,7 +25,7 @@ public class LocationsHadapter extends RecyclerView.Adapter<LocationsHadapter.Vi
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View v = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.car_card, parent, false);
+                    .inflate(R.layout.location_card, parent, false);
             return new ViewHolder(v);
         }
 
@@ -54,9 +54,9 @@ public class LocationsHadapter extends RecyclerView.Adapter<LocationsHadapter.Vi
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
 
-                model = (TextView) itemView.findViewById(R.id.model_c);
-                limite_de_kilometrage = (TextView) itemView.findViewById(R.id.limite_de_kilometrage_c);
-                conditions_en_matiere_de_carburant = (TextView) itemView.findViewById(R.id.conditions_en_matiere_de_carburant_c);
+                model = (TextView) itemView.findViewById(R.id.model);
+                limite_de_kilometrage = (TextView) itemView.findViewById(R.id.limite_de_kilometrage);
+                conditions_en_matiere_de_carburant = (TextView) itemView.findViewById(R.id.conditions_en_matiere_de_carburant);
                 motif = (TextView) itemView.findViewById(R.id.motif);
                 date = (TextView) itemView.findViewById(R.id.date);
             }

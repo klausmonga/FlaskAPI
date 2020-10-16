@@ -3,6 +3,7 @@ package com.b6555s.location;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.android.volley.Request;
@@ -55,11 +56,23 @@ public class Login extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 Log.e("notif",response);
-                if (response.equals(1)){
-                    startActivity(new Intent(getApplicationContext(),MainActivity.class));
-                }else {
-                    Toast.makeText(Login.this, "Auth faild", Toast.LENGTH_SHORT).show();
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    if (!jsonObject.get("user").equals(0)){
+
+                        SharedPreferences msharedPreferences = getSharedPreferences("first_start", 0);
+                        SharedPreferences.Editor editor=msharedPreferences.edit();
+                        editor.putBoolean("logged", true);
+                        editor.putInt("id_user", jsonObject.getJSONObject("user").getInt("id"));
+                        editor.commit();
+                        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                    }else {
+                        Toast.makeText(Login.this, "Auth faild", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    Log.e("json",e.getMessage());
                 }
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -80,6 +93,12 @@ public class Login extends AppCompatActivity {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     if (!jsonObject.get("user").equals(0)){
+
+                        SharedPreferences msharedPreferences = getSharedPreferences("first_start", 0);
+                        SharedPreferences.Editor editor=msharedPreferences.edit();
+                        editor.putBoolean("logged", true);
+                        editor.putInt("id_user", jsonObject.getJSONObject("user").getInt("id"));
+                        editor.commit();
                         startActivity(new Intent(getApplicationContext(),MainActivity.class));
                     }else {
                         Toast.makeText(Login.this, "Auth faild", Toast.LENGTH_SHORT).show();
@@ -98,4 +117,12 @@ public class Login extends AppCompatActivity {
         MySingleton.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        SharedPreferences msharedPreferences = getSharedPreferences("first_start", 0);
+        if(msharedPreferences.getBoolean("logged",false)){
+            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+        }
+    }
 }
