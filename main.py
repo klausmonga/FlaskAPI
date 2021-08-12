@@ -9,12 +9,14 @@ app = Flask(__name__)
 def index():
     return "Sensor server"
 
-@app.route('/insert/<hum>/<tmp>/<lum>/<atmos>/', methods=['GET'])
-def insert(hum,tmp,lum,atmos):
+
+
+@app.route('/insert_hum/<hum>/', methods=['GET'])
+def insert_hum(hum):
     db = sqlite3.connect('/home/landry/Documents/kali_restore/sensor.db')
     cursor = db.cursor()
-    query = "INSERT INTO mesures3 (hum,tmp,lum,atmos) VALUES (?, ?, ?, ?)"
-    values = (hum,tmp,lum,atmos)
+    query = "INSERT INTO hum (value) VALUES (?)"
+    values = (hum)
     cursor.execute(query, values)
     db.commit()
     if cursor.rowcount == 1:
@@ -22,41 +24,32 @@ def insert(hum,tmp,lum,atmos):
     db.close()
     return '0'	
 
-
-@app.route('/login/<name>/<password>', methods=['GET'])
-def login(name, password):
+@app.route('/insert_tmp/<tmp>/', methods=['GET'])
+def insert_tmp(tmp):
+    db = sqlite3.connect('/home/landry/Documents/kali_restore/sensor.db')
     cursor = db.cursor()
-    query = "SELECT * FROM users WHERE name='"+name+"' AND password='"+password+"'"
-    cursor.execute(query)
-    data = cursor.fetchall()
-    for pair in data:
-        return jsonify({"user": {"id":pair[0]}})
-    return jsonify({"user": 0})
-
-@app.route('/cars', methods=['GET'])
-def cars():
-    cursor = db.cursor()
-    query = "SELECT * FROM `cars` WHERE 1"
-    cursor.execute(query)
-    data = cursor.fetchall()
-    return jsonify(data)
-
-@app.route('/locations/<id_user>', methods=['GET'])
-def locations(id_user):
-    cursor = db.cursor()
-    query = "SELECT * FROM locations INNER JOIN cars ON locations.id_car=cars.id WHERE locations.id_user="+str(id_user)
-    cursor.execute(query)
-    data = cursor.fetchall()
-    return jsonify(data)
-
-@app.route('/location/<id_car>/<id_user>/<why>', methods=['GET'])
-def location(id_car, id_user, why):
-    cursor = db.cursor()
-    query = "INSERT INTO locations (id_user, id_car, motif) VALUES (%s, %s, %s)"
-    values = (id_user, id_car, why)
+    query = "INSERT INTO tmp (values) VALUES (?)"
+    values = (tmp)
     cursor.execute(query, values)
     db.commit()
-    return str(cursor.rowcount)
+    if cursor.rowcount == 1:
+    	return '1'
+    db.close()
+    return '0'	
+
+@app.route('/insert_lum/<lum>/', methods=['GET'])
+def insert_lum(lum):
+    db = sqlite3.connect('/home/landry/Documents/kali_restore/sensor.db')
+    cursor = db.cursor()
+    query = "INSERT INTO lum (values) VALUES (?)"
+    values = (lum)
+    cursor.execute(query, values)
+    db.commit()
+    if cursor.rowcount == 1:
+    	return '1'
+    db.close()
+    return '0'	
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
