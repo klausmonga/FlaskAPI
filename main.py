@@ -1,28 +1,27 @@
 from flask import Flask,jsonify,json,request
-import mysql.connector as mysql
-db = mysql.connect(
-    host = "localhost",
-    user = "root",
-    passwd = "",
-    database = "flaskdb"
-)
+import sqlite3
+
+
 
 app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    return "Hello Nuclear Geeks"
+    return "Sensor server"
 
-@app.route('/sign_in/<name>/<password>', methods=['GET'])
-def sign_in(name, password):
+@app.route('/insert/<hum>/<tmp>/<lum>/<atmos>/', methods=['GET'])
+def insert(hum,tmp,lum,atmos):
+    db = sqlite3.connect('/home/landry/Documents/kali_restore/sensor.db')
     cursor = db.cursor()
-    query = "INSERT INTO users (name, password) VALUES (%s, %s)"
-    values = (name, password)
+    query = "INSERT INTO mesures3 (hum,tmp,lum,atmos) VALUES (?, ?, ?, ?)"
+    values = (hum,tmp,lum,atmos)
     cursor.execute(query, values)
     db.commit()
-    if cursor.rowcount is 1:
-    	return login(name,password)
-    return 0
+    if cursor.rowcount == 1:
+    	return '1'
+    db.close()
+    return '0'	
+
 
 @app.route('/login/<name>/<password>', methods=['GET'])
 def login(name, password):
