@@ -13,7 +13,7 @@ def index():
 
 @app.route('/insert_hum/<hum>/', methods=['GET'])
 def insert_hum(hum):
-    db = sqlite3.connect('/home/landry/Documents/kali_restore/sensor.db')
+    db = sqlite3.connect('sensor.db')
     cursor = db.cursor()
     query = "INSERT INTO hum (value) VALUES (?)"
     values = (hum)
@@ -26,7 +26,7 @@ def insert_hum(hum):
 
 @app.route('/insert_tmp/<tmp>/', methods=['GET'])
 def insert_tmp(tmp):
-    db = sqlite3.connect('/home/landry/Documents/kali_restore/sensor.db')
+    db = sqlite3.connect('sensor.db')
     cursor = db.cursor()
     query = "INSERT INTO tmp (values) VALUES (?)"
     values = (tmp)
@@ -39,7 +39,7 @@ def insert_tmp(tmp):
 
 @app.route('/insert_lum/<lum>/', methods=['GET'])
 def insert_lum(lum):
-    db = sqlite3.connect('/home/landry/Documents/kali_restore/sensor.db')
+    db = sqlite3.connect('sensor.db')
     cursor = db.cursor()
     query = "INSERT INTO lum (values) VALUES (?)"
     values = (lum)
